@@ -16,7 +16,16 @@ io.on('connection',(socket)=>{
     console.log('user connected');
     socket.on('disconnect',()=>{
         console.log('user disconnected');
-    });  
+    }); 
+    socket.emit('newMessage',{
+        from:'abc',
+        message:'hello',
+        createdAt:'12345'
+    }) 
+    socket.on('createMessage',(message)=>{
+        console.log(message);
+        
+    })
 })
 
 server.listen('3000',()=>{
