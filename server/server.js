@@ -17,14 +17,15 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         console.log('user disconnected');
     }); 
-    socket.emit('newMessage',{
-        from:'abc',
-        message:'hello',
-        createdAt:'12345'
-    }) 
+    socket.emit('newMessage','Welcome User')
+    socket.broadcast.emit('newMessage','New User logged in')
     socket.on('createMessage',(message)=>{
         console.log(message);
-        
+        io.emit('newMessage',{
+            from:message.from,
+            text:message.text,
+            createdAt:new Date().getTime()
+        })  
     })
 })
 

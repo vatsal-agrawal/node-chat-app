@@ -8,7 +8,3 @@ console.log('user now disconnected')
 socket.on('newMessage',function(message){
 console.log(message);
 })
-socket.emit('createMessage',{
-    from:'def',
-    text:'blah blah blah'
-})
