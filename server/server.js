@@ -20,9 +20,10 @@ io.on('connection',(socket)=>{
     }); 
     socket.emit('newMessage','Welcome User')
     socket.broadcast.emit('newMessage','New User logged in')
+    
     socket.on('createMessage',(message)=>{
         console.log(message);
-        io.emit('newMessage',generateMessage(message.from,message.text,message.createdAt));  
+        io.emit('newMessage',generateMessage(message.from,message.text));  
     })
 })
 
