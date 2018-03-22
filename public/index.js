@@ -21,3 +21,19 @@ jQuery('#message-form').on('submit',function (e) {
         text: jQuery('[name=messages]').val(),
     })
 });
+
+jQuery('#btn-geolocation').on('click',function(params) {
+    if(!navigator.geolocation){
+        alert('Something went wrong');
+    }
+    navigator.geolocation.getCurrentPosition(function (position) {
+        socket.emit('createMessage',{
+            from:'Admin',
+            text: `Latitude is ${position.coords.latitude} and Longitide is ${position.coords.longitude}`
+        })
+        
+    },function(){
+        console.log('Unable to fetch location');
+        
+    })
+})

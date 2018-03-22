@@ -18,9 +18,15 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         console.log('user disconnected');
     }); 
-    socket.emit('newMessage','Welcome User')
-    socket.broadcast.emit('newMessage','New User logged in')
-    
+    socket.emit('newMessage',{
+        from:'admin',
+        text:'Welcome User'
+    })
+    socket.broadcast.emit('newMessage',{
+        from:'Admin',
+        text:'New User logged in'
+    })
+
     socket.on('createMessage',(message)=>{
         console.log(message);
         io.emit('newMessage',generateMessage(message.from,message.text));  
