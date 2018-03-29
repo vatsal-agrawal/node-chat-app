@@ -13,26 +13,45 @@ socket.on('newMessage',function(message){
     jQuery('#messg').append(li);
     console.log(message);
 })
+socket.on('getLocation',function(message){
+
+    var li = jQuery('<li></li>');
+    var a = jQuery('<a target=_blank>Click Me!</a>')
+    li.text(`${message.from} : `)
+    a.attr('href',message.url);
+    li.append(a);
+    jQuery('#messg').append(li);
+    console.log(message);
+})
+
 jQuery('#message-form').on('submit',function (e) {
     e.preventDefault()
-
+    var messageBox = jQuery('[name=messages]');
     socket.emit('createMessage',{
         from:'user',
-        text: jQuery('[name=messages]').val(),
+        text: messageBox.val(),
+    },function () {
+        messageBox.val('12345')
     })
 });
 
-jQuery('#btn-geolocation').on('click',function(params) {
+var locationButton = jQuery('#btn-geolocation');
+
+locationButton.on('click',function(params) {
     if(!navigator.geolocation){
         alert('Something went wrong');
     }
+    locationButton.attr('disabled','disabled').text('Sending Location...')
     navigator.geolocation.getCurrentPosition(function (position) {
-        socket.emit('createMessage',{
-            from:'Admin',
-            text: `Latitude is ${position.coords.latitude} and Longitide is ${position.coords.longitude}`
+        locationButton.removeattr('disabled').text('Send Location');
+        socket.emit('sendLocationMessage',{
+            
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
         })
         
     },function(){
+        locationButton.removeattr('disabled').text('Send Location');        
         console.log('Unable to fetch location');
         
     })
