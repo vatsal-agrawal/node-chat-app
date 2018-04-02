@@ -9,7 +9,7 @@ console.log('user now disconnected')
 socket.on('newMessage',function(message){
 
     var li = jQuery('<li></li>');
-    li.text(`${message.from} :  ${message.text}`)
+    li.text(`${message.from} ${message.createdAt} :  ${message.text}`)
     jQuery('#messg').append(li);
     console.log(message);
 })
@@ -17,7 +17,7 @@ socket.on('getLocation',function(message){
 
     var li = jQuery('<li></li>');
     var a = jQuery('<a target=_blank>Click Me!</a>')
-    li.text(`${message.from} : `)
+    li.text(`${message.from} ${message.createdAt}: `)
     a.attr('href',message.url);
     li.append(a);
     jQuery('#messg').append(li);
@@ -31,7 +31,7 @@ jQuery('#message-form').on('submit',function (e) {
         from:'user',
         text: messageBox.val(),
     },function () {
-        messageBox.val('12345')
+        messageBox.val('')
     })
 });
 
@@ -43,7 +43,7 @@ locationButton.on('click',function(params) {
     }
     locationButton.attr('disabled','disabled').text('Sending Location...')
     navigator.geolocation.getCurrentPosition(function (position) {
-        locationButton.removeattr('disabled').text('Send Location');
+        locationButton.removeAttr('disabled').text('Send Location');
         socket.emit('sendLocationMessage',{
             
             latitude: position.coords.latitude,

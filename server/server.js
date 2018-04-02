@@ -1,4 +1,5 @@
 const express = require('express')
+const moment = require('moment')
 const path = require('path')
 const http = require('http');
 const socketIO = require('socket.io');
@@ -20,11 +21,13 @@ io.on('connection',(socket)=>{
     }); 
     socket.emit('newMessage',{
         from:'admin',
-        text:'Welcome User'
+        text:'Welcome User',
+        createdAt:moment().format("ddd, hA")
     })
     socket.broadcast.emit('newMessage',{
         from:'Admin',
-        text:'New User logged in'
+        text:'New User logged in',
+        createdAt:moment().format("ddd, hA")
     })
 
     socket.on('createMessage',(message,callback)=>{
