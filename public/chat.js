@@ -11,12 +11,22 @@ socket.on('connect',function (){
         }
     })
 })
+
+socket.on('updateUsersList',function(users){
+    var ol = jQuery('<ol></ol>')
+
+    users.forEach(user => {
+        ol.append(jQuery('<li></li>').text(user))
+    });
+    jQuery('#users').html(ol);
+})
+
+
 socket.on('disconnect',function (){
 console.log('user now disconnected')
 })
 
 socket.on('newMessage',function(message){
-
     var html = Mustache.render(jQuery('#message-template').html(),{
         from:message.from,
         createdAt:message.createdAt,
