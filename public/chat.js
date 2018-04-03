@@ -1,6 +1,15 @@
 var socket = io('http://localhost:3000/');
+
 socket.on('connect',function (){
-console.log('user now connected')
+    socket.emit('join',jQuery.deparam(window.location.search),function (err) {
+        if(err){
+            alert('data entered is incorrect')
+            window.location.href = '/'
+        }
+        else{
+
+        }
+    })
 })
 socket.on('disconnect',function (){
 console.log('user now disconnected')

@@ -4,6 +4,7 @@ const path = require('path')
 const http = require('http');
 const socketIO = require('socket.io');
 const {generateMessage,generateLocationMessage} = require('./utils/message');
+const {isRealString} = require('./utils/validation');
 
 var pathJoin = path.join(__dirname,'../public')
 var app = express();
@@ -28,6 +29,13 @@ io.on('connection',(socket)=>{
         from:'Admin',
         text:'New User logged in',
         createdAt:moment().format("ddd, hA")
+    })
+
+    socket.on('join',(message,callback)=>{
+        if(!isRealString(message.name) || !isRealString(message.room_name)){
+            callback('Please enter correct data');
+        }
+        callback();
     })
 
     socket.on('createMessage',(message,callback)=>{
